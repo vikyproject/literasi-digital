@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ - Literasi AI</title>
+    <style>
+      :root {
+        --bg: #eef4ff;
+        --surface: rgba(255, 255, 255, 0.95);
+        --text: #1f2140;
+        --muted: #6d7088;
+        --primary: #5d54ff;
+        --primary-soft: rgba(93, 84, 255, 0.12);
+        --success: #2f855a;
+        --danger: #c53030;
+        --shadow: 0 24px 80px rgba(55, 58, 97, 0.12);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(93, 84, 255, 0.16),
+            transparent 24%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(63, 145, 255, 0.12),
+            transparent 20%
+          ),
+          linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+        color: var(--text);
+        padding: 1.5rem;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(93, 84, 255, 0.05),
+          transparent 55%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .page {
+        position: relative;
+        max-width: 1140px;
+        margin: 0 auto;
+        z-index: 1;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem 1.6rem;
+        background: var(--surface);
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        border-radius: calc(var(--radius) - 2px);
+        box-shadow: var(--shadow);
+        margin-bottom: 1.75rem;
+        backdrop-filter: blur(14px);
+      }
+
+      .brand {
+        font-size: 1.4rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        border-radius: 999px;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+
+      .nav-links a:hover {
+        background: var(--primary-soft);
+        transform: translateY(-1px);
+        color: var(--primary);
+      }
+
+      .hero {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        padding: 2.2rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .hero__eyebrow {
+        display: inline-flex;
+        align-items: center;
+        color: var(--primary);
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .hero__title {
+        margin: 0;
+        font-size: clamp(2rem, 2.6vw, 2.8rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .hero__text {
+        margin: 0;
+        color: var(--muted);
+        max-width: 760px;
+        line-height: 1.85;
+      }
+
+      .faq-container {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+      }
+
+      .faq-list {
+        display: grid;
+        gap: 1.2rem;
+      }
+
+      .faq-item {
+        background: #f9faff;
+        border: 1px solid rgba(148, 148, 168, 0.14);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .faq-item:hover {
+        border-color: rgba(93, 84, 255, 0.24);
+        box-shadow: 0 8px 24px rgba(93, 84, 255, 0.08);
+      }
+
+      .faq-item.active {
+        background: linear-gradient(
+          135deg,
+          rgba(93, 84, 255, 0.04),
+          rgba(79, 129, 255, 0.02)
+        );
+        border-color: rgba(93, 84, 255, 0.24);
+      }
+
+      .faq-question {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1.4rem 1.6rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text);
+        text-align: left;
+        transition: color 0.2s ease;
+        gap: 1rem;
+      }
+
+      .faq-question:hover {
+        color: var(--primary);
+      }
+
+      .faq-item.active .faq-question {
+        color: var(--primary);
+      }
+
+      .faq-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        flex-shrink: 0;
+        transition: transform 0.3s ease;
+      }
+
+      .faq-item.active .faq-icon {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 500px;
+      }
+
+      .faq-answer-text {
+        padding: 0 1.6rem 1.4rem;
+        color: var(--muted);
+        line-height: 1.85;
+        font-size: 0.98rem;
+      }
+
+      .search-box {
+        margin-bottom: 1.5rem;
+        display: flex;
+        gap: 0.8rem;
+      }
+
+      .search-input {
+        flex: 1;
+        padding: 1rem 1.4rem;
+        border: 1.5px solid rgba(93, 84, 255, 0.16);
+        border-radius: 999px;
+        background: #f9f9ff;
+        color: var(--text);
+        font-size: 0.98rem;
+        font-family: inherit;
+        transition: all 0.2s ease;
+      }
+
+      .search-input:focus {
+        outline: none;
+        background: white;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(93, 84, 255, 0.08);
+      }
+
+      .search-input::placeholder {
+        color: var(--muted);
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding: 1rem;
+        }
+
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero {
+          padding: 1.5rem;
+        }
+
+        .faq-container {
+          padding: 1.5rem;
+        }
+
+        .faq-question {
+          padding: 1.2rem;
+          font-size: 1rem;
+        }
+
+        .faq-answer-text {
+          padding: 0 1.2rem 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav>
+        <div class="brand">FAQ</div>
+        <div class="nav-links">
+          <a href="menu.html">Menu</a>
+          <a href="modul.html">Modul</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <span class="hero__eyebrow">Pusat Bantuan</span>
+        <h1 class="hero__title">Pertanyaan yang Sering Diajukan</h1>
+        <p class="hero__text">
+          Temukan jawaban untuk pertanyaan umum tentang Literasi AI. Jika Anda
+          tidak menemukan jawaban yang Anda cari, hubungi tim dukungan kami.
+        </p>
+      </section>
+
+      <section class="faq-container">
+        <div class="search-box">
+          <input
+            type="text"
+            class="search-input"
+            id="searchInput"
+            placeholder="Cari pertanyaan..."
+          />
+        </div>
+
+        <div class="faq-list" id="faqList"></div>
+      </section>
+    </div>
+
+    <script>
+      const faqs = [
+        {
+          id: 1,
+          question: "Apa itu Literasi AI?",
+          answer:
+            "Literasi AI adalah platform edukasi yang menyediakan materi pembelajaran tentang kecerdasan buatan (AI) untuk membantu masyarakat memahami konsep dasar, aplikasi, dan dampak AI dalam kehidupan sehari-hari.",
+        },
+        {
+          id: 2,
+          question: "Siapa yang dapat menggunakan Literasi AI?",
+          answer:
+            "Literasi AI dirancang untuk semua kalangan, mulai dari pelajar, mahasiswa, profesional, hingga masyarakat umum yang ingin belajar tentang AI tanpa memerlukan latar belakang teknis.",
+        },
+        {
+          id: 3,
+          question: "Apakah materi di Literasi AI gratis?",
+          answer:
+            "Ya, semua materi pembelajaran di Literasi AI dapat diakses secara gratis. Kami percaya bahwa pengetahuan tentang AI harus dapat diakses oleh semua orang tanpa hambatan biaya.",
+        },
+        {
+          id: 4,
+          question: "Bagaimana cara saya mulai belajar di Literasi AI?",
+          answer:
+            "Anda dapat mulai dengan mengunjungi halaman modul kami, memilih topik yang Anda minati, dan mengikuti panduan pembelajaran yang tersedia. Kami juga menyediakan studi kasus dan konsultasi AI untuk membantu Anda memahami konsep dengan lebih baik.",
+        },
+        {
+          id: 5,
+          question:
+            "Apakah saya perlu memiliki pengetahuan teknis untuk menggunakan Literasi AI?",
+          answer:
+            "Tidak, Literasi AI dirancang untuk pemula dan tidak memerlukan pengetahuan teknis sebelumnya. Materi kami disusun dengan bahasa yang mudah dipahami dan dilengkapi dengan contoh serta ilustrasi untuk memudahkan pemahaman.",
+        },
+      ];
+
+      let expandedId = null;
+
+      function renderFAQs(itemsToShow = faqs) {
+        const faqList = document.getElementById("faqList");
+        faqList.innerHTML = itemsToShow
+          .map(
+            (faq) => `
+                <div class="faq-item ${expandedId === faq.id ? "active" : ""}">
+                    <button class="faq-question" onclick="toggleFAQ(${faq.id})">
+                        <span>${faq.question}</span>
+                        <span class="faq-icon">▼</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-text">${faq.answer}</div>
+                    </div>
+                </div>
+            `,
+          )
+          .join("");
+      }
+
+      function toggleFAQ(id) {
+        expandedId = expandedId === id ? null : id;
+        renderFAQs(getCurrentFilteredFAQs());
+      }
+
+      function getCurrentFilteredFAQs() {
+        const searchQuery = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        if (!searchQuery) return faqs;
+
+        return faqs.filter(
+          (faq) =>
+            faq.question.toLowerCase().includes(searchQuery) ||
+            faq.answer.toLowerCase().includes(searchQuery),
+        );
+      }
+
+      document.getElementById("searchInput").addEventListener("input", () => {
+        expandedId = null;
+        renderFAQs(getCurrentFilteredFAQs());
+      });
+
+      renderFAQs();
+    </script>
+  </body>
+</html>

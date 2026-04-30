@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Admin</title>
+    <style>
+      :root {
+        --bg: #eef4ff;
+        --surface: rgba(255, 255, 255, 0.95);
+        --text: #1f2140;
+        --muted: #6d7088;
+        --primary: #5d54ff;
+        --shadow: 0 24px 80px rgba(55, 58, 97, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(93, 84, 255, 0.15),
+            transparent 24%
+          ),
+          linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+        color: var(--text);
+        padding: 1.5rem;
+      }
+
+      .page {
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .title-group h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+      }
+
+      .title-group p {
+        margin: 0.6rem 0 0;
+        color: var(--muted);
+      }
+
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.95rem 1.3rem;
+        border-radius: 999px;
+        background: rgba(93, 84, 255, 0.12);
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        border: 1px solid rgba(93, 84, 255, 0.18);
+      }
+
+      .tab-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .tab-button {
+        border: 1px solid rgba(93, 84, 255, 0.18);
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--text);
+        padding: 0.9rem 1.2rem;
+        border-radius: 999px;
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          background 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .tab-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .tab-button.active {
+        background: linear-gradient(
+          135deg,
+          rgba(93, 84, 255, 0.14),
+          rgba(79, 129, 255, 0.12)
+        );
+        border-color: rgba(93, 84, 255, 0.25);
+        color: var(--primary);
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        background: var(--surface);
+        border-radius: 30px;
+        padding: 1.8rem;
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(93, 84, 255, 0.1);
+      }
+
+      .panel h2 {
+        margin-top: 0;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+      }
+
+      th,
+      td {
+        padding: 1rem 0.9rem;
+        text-align: left;
+      }
+
+      th {
+        background: rgba(93, 84, 255, 0.14);
+        color: var(--text);
+      }
+
+      tr {
+        border-bottom: 1px solid rgba(148, 148, 168, 0.14);
+      }
+
+      .role-select,
+      .control-button,
+      .module-input,
+      .module-submit {
+        border-radius: 999px;
+        border: 1px solid rgba(93, 84, 255, 0.16);
+        font: inherit;
+      }
+
+      .role-select,
+      .module-input {
+        padding: 0.75rem 1rem;
+        color: var(--text);
+        width: 100%;
+        max-width: 220px;
+        background: #fff;
+      }
+
+      .control-button {
+        padding: 0.65rem 1rem;
+        color: #fff;
+        background: linear-gradient(135deg, #5d54ff, #4f81ff);
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .control-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .delete-button {
+        background: linear-gradient(135deg, #ff5c7a, #ff8da3);
+      }
+
+      .module-section {
+        gap: 1rem;
+      }
+
+      .form-group {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .module-form {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .module-input,
+      .module-textarea {
+        width: 100%;
+        padding: 0.95rem 1rem;
+        background: #fff;
+        min-height: 44px;
+      }
+
+      .module-textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+
+      .module-submit {
+        padding: 0.95rem 1.4rem;
+        width: fit-content;
+        color: #fff;
+        background: linear-gradient(135deg, #5d54ff, #4f81ff);
+        border: none;
+        cursor: pointer;
+      }
+
+      .module-submit:hover {
+        transform: translateY(-1px);
+      }
+
+      .module-cards {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .module-card {
+        border-radius: 24px;
+        border: 1px solid rgba(93, 84, 255, 0.1);
+        padding: 1.3rem;
+        background: #fff;
+      }
+
+      .module-card h3 {
+        margin: 0 0 0.45rem;
+      }
+
+      .module-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .module-card-footer {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .module-card-footer a {
+        text-decoration: none;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .message {
+        margin-top: 1rem;
+        color: var(--muted);
+      }
+
+      @media (max-width: 960px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .header,
+        .module-card-footer {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="header">
+        <div class="title-group">
+          <h1>Panel Admin</h1>
+          <p>
+            Kelola pengguna dan tambahkan modul pembelajaran langsung dari satu
+            halaman.
+          </p>
+        </div>
+        <a href="login.html" class="btn-back">⬅ Kembali ke Login</a>
+      </div>
+
+      <div class="tab-nav">
+        <button type="button" class="tab-button active" data-tab="usersTab">
+          Kelola User
+        </button>
+        <button type="button" class="tab-button" data-tab="modulesTab">
+          Tambah Modul
+        </button>
+      </div>
+
+      <div class="grid">
+        <section class="panel tab-panel active" id="usersTab">
+          <div class="panel-header">
+            <h2>Kelola Pengguna</h2>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Tindakan</th>
+                </tr>
+              </thead>
+              <tbody id="userData"></tbody>
+            </table>
+          </div>
+          <p class="message" id="userMessage"></p>
+        </section>
+
+        <section class="panel module-section tab-panel" id="modulesTab">
+          <div>
+            <h2>Tambah Modul</h2>
+            <p>Tambahkan materi baru yang akan muncul di halaman modul.</p>
+          </div>
+          <form id="moduleForm" class="module-form">
+            <div class="form-group">
+              <label for="moduleTitle">Judul Modul</label>
+              <input
+                id="moduleTitle"
+                class="module-input"
+                type="text"
+                required
+                placeholder="Judul modul"
+              />
+            </div>
+            <div class="form-group">
+              <label for="moduleDescription">Deskripsi Modul</label>
+              <textarea
+                id="moduleDescription"
+                class="module-textarea"
+                required
+                placeholder="Deskripsi singkat modul"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="moduleImage">Link Gambar</label>
+              <input
+                id="moduleImage"
+                class="module-input"
+                type="url"
+                placeholder="https://..."
+              />
+            </div>
+            <div class="form-group">
+              <label for="moduleUrl">Link Modul</label>
+              <input
+                id="moduleUrl"
+                class="module-input"
+                type="url"
+                placeholder="https://..."
+              />
+            </div>
+            <button type="submit" class="module-submit">Simpan Modul</button>
+          </form>
+          <p class="message" id="moduleMessage"></p>
+          <div>
+            <h3>Modul Terbaru</h3>
+            <div id="moduleCards" class="module-cards"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const userData = document.getElementById("userData");
+      const userMessage = document.getElementById("userMessage");
+      const moduleCards = document.getElementById("moduleCards");
+      const moduleMessage = document.getElementById("moduleMessage");
+
+      async function loadUsers() {
+        try {
+          const res = await fetch("/admin/users");
+          const data = await res.json();
+          userData.innerHTML = data
+            .map(
+              (user) => `
+                <tr>
+                  <td>${user.id}</td>
+                  <td>${user.username}</td>
+                  <td>
+                    <select class="role-select" data-id="${user.id}">
+                      <option value="user" ${user.role === "user" ? "selected" : ""}>User</option>
+                      <option value="admin" ${user.role === "admin" ? "selected" : ""}>Admin</option>
+                    </select>
+                  </td>
+                  <td>
+                    <button type="button" class="control-button" data-action="update" data-id="${user.id}">Ubah Role</button>
+                    <button type="button" class="control-button delete-button" data-action="delete" data-id="${user.id}">Hapus</button>
+                  </td>
+                </tr>
+              `,
+            )
+            .join("");
+
+          document.querySelectorAll(".control-button").forEach((button) => {
+            button.addEventListener("click", handleUserAction);
+          });
+        } catch (error) {
+          userMessage.textContent = "Gagal memuat data pengguna.";
+        }
+      }
+
+      async function handleUserAction(event) {
+        const button = event.currentTarget;
+        const id = button.dataset.id;
+        const action = button.dataset.action;
+
+        if (action === "update") {
+          const roleSelect = document.querySelector(`select[data-id='${id}']`);
+          const role = roleSelect.value;
+          const response = await fetch(`/admin/users/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ role }),
+          });
+          const result = await response.json();
+          userMessage.textContent = result.success
+            ? "Role pengguna berhasil diperbarui."
+            : result.error || "Gagal memperbarui role.";
+          await loadUsers();
+          return;
+        }
+
+        if (action === "delete") {
+          if (
+            !confirm("Hapus pengguna ini? Tindakan tidak dapat dikembalikan.")
+          )
+            return;
+          const response = await fetch(`/admin/users/${id}`, {
+            method: "DELETE",
+          });
+          const result = await response.json();
+          userMessage.textContent = result.success
+            ? "Pengguna berhasil dihapus."
+            : result.error || "Gagal menghapus pengguna.";
+          await loadUsers();
+        }
+      }
+
+      async function loadModules() {
+        try {
+          const res = await fetch("/admin/modules");
+          const data = await res.json();
+          moduleCards.innerHTML = data
+            .map(
+              (mod) => `
+                <div class="module-card">
+                  <h3>${mod.title}</h3>
+                  <p>${mod.description}</p>
+                  <div class="module-card-footer">
+                    <span>${new Date(mod.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "long", year: "numeric" })}</span>
+                    ${mod.module_url ? `<a href="${mod.module_url}" target="_blank">Buka Modul</a>` : "<span>Tanpa tautan</span>"}
+                  </div>
+                </div>
+              `,
+            )
+            .join("");
+        } catch (error) {
+          moduleCards.innerHTML = "<p class='message'>Gagal memuat modul.</p>";
+        }
+      }
+
+      function activateTab(tabId) {
+        document.querySelectorAll(".tab-button").forEach((button) => {
+          button.classList.toggle("active", button.dataset.tab === tabId);
+        });
+        document.querySelectorAll(".tab-panel").forEach((panel) => {
+          panel.classList.toggle("active", panel.id === tabId);
+        });
+      }
+
+      document.querySelectorAll(".tab-button").forEach((button) => {
+        button.addEventListener("click", () => activateTab(button.dataset.tab));
+      });
+
+      document
+        .getElementById("moduleForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+          moduleMessage.textContent = "";
+
+          const title = document.getElementById("moduleTitle").value.trim();
+          const description = document
+            .getElementById("moduleDescription")
+            .value.trim();
+          const image_url = document.getElementById("moduleImage").value.trim();
+          const module_url = document.getElementById("moduleUrl").value.trim();
+
+          if (!title || !description) {
+            moduleMessage.textContent = "Judul dan deskripsi wajib diisi.";
+            return;
+          }
+
+          try {
+            const response = await fetch("/admin/modules", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                title,
+                description,
+                image_url,
+                module_url,
+              }),
+            });
+            const result = await response.json();
+            if (result.success) {
+              moduleMessage.textContent = "Modul berhasil ditambahkan.";
+              document.getElementById("moduleForm").reset();
+              await loadModules();
+            } else {
+              moduleMessage.textContent =
+                result.error || "Gagal menambahkan modul.";
+            }
+          } catch (error) {
+            moduleMessage.textContent =
+              "Terjadi kesalahan saat menambahkan modul.";
+          }
+        });
+
+      loadUsers();
+      loadModules();
+    </script>
+  </body>
+</html>

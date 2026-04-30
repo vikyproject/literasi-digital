@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat AI Literasi</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <style>
+      :root {
+        --bg: #eef4ff;
+        --panel: rgba(255, 255, 255, 0.95);
+        --surface: #ffffff;
+        --surface-soft: rgba(255, 255, 255, 0.78);
+        --text: #1f2140;
+        --muted: #6d7088;
+        --primary: #5e55ff;
+        --primary-soft: rgba(94, 85, 255, 0.12);
+        --shadow: 0 24px 80px rgba(55, 58, 97, 0.12);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100vh;
+        height: 100%;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(94, 85, 255, 0.18),
+            transparent 26%
+          ),
+          linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            circle at 25% 20%,
+            rgba(94, 85, 255, 0.1),
+            transparent 18%
+          ),
+          radial-gradient(
+            circle at 80% 75%,
+            rgba(68, 142, 255, 0.08),
+            transparent 16%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .chat-shell {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: min(960px, 100%);
+        max-height: calc(100vh - 3rem);
+        height: min(100vh - 3rem, 100%);
+        overflow: hidden;
+        border-radius: 34px;
+        box-shadow: var(--shadow);
+        background: var(--panel);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        z-index: 1;
+      }
+
+      .chat-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 1rem;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.95),
+          rgba(255, 255, 255, 0.82)
+        );
+        border-bottom: 1px solid rgba(115, 103, 255, 0.12);
+        flex-shrink: 0;
+      }
+
+      .chat-title {
+        margin: 0;
+        font-size: 1.6rem;
+        line-height: 1.1;
+      }
+
+      .chat-subtitle {
+        margin: 0.45rem 0 0;
+        color: var(--muted);
+        font-size: 0.98rem;
+      }
+
+      .chat-header-actions {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+        justify-content: end;
+      }
+
+      .btn-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1.25rem;
+        border-radius: 999px;
+        border: 1px solid rgba(94, 85, 255, 0.16);
+        background: rgba(94, 85, 255, 0.08);
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 700;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .btn-link:hover {
+        transform: translateY(-1px);
+        background: rgba(94, 85, 255, 0.14);
+      }
+
+      .chat-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-height: 0;
+      }
+
+      #chat-box {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.1rem;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.75),
+          rgba(245, 247, 255, 0.9)
+        );
+      }
+
+      #typing-container {
+        padding: 0 2rem 0;
+        min-height: 1.4rem;
+      }
+
+      .input-area {
+        display: flex;
+        gap: 0.85rem;
+        padding: 1.4rem 2rem 1.8rem;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        border-top: 1px solid rgba(94, 85, 255, 0.08);
+        flex-shrink: 0;
+      }
+
+      .panel-info {
+        padding: 2rem;
+        background: var(--surface);
+        border-left: 1px solid rgba(94, 85, 255, 0.08);
+        display: none;
+      }
+
+      .panel-info h2 {
+        margin-top: 0;
+        font-size: 1.15rem;
+      }
+
+      .panel-info p {
+        color: var(--muted);
+        line-height: 1.8;
+        margin-bottom: 1rem;
+      }
+
+      .panel-info ul {
+        padding-left: 1.2rem;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .bubble {
+        max-width: 78%;
+        padding: 16px 18px;
+        border-radius: 24px;
+        font-size: 0.98rem;
+        line-height: 1.7;
+        position: relative;
+        word-break: break-word;
+        box-shadow: 0 10px 28px rgba(49, 53, 95, 0.08);
+      }
+
+      .user-msg {
+        align-self: flex-end;
+        background: linear-gradient(135deg, #6d5dff, #6484ff);
+        color: #fff;
+        border-bottom-right-radius: 6px;
+        border-bottom-left-radius: 24px;
+      }
+
+      .ai-msg {
+        align-self: flex-start;
+        background: var(--surface);
+        color: var(--text);
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 24px;
+        border: 1px solid rgba(141, 147, 209, 0.16);
+      }
+
+      .typing {
+        align-self: flex-start;
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-style: italic;
+        padding-left: 0.4rem;
+      }
+
+      .input-area {
+        display: flex;
+        gap: 0.85rem;
+        padding: 1.4rem 2rem 1.8rem;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        border-top: 1px solid rgba(94, 85, 255, 0.08);
+      }
+
+      .input-area input {
+        flex: 1;
+        min-width: 0;
+        padding: 1rem 1.25rem;
+        border-radius: 999px;
+        border: 1px solid rgba(141, 147, 209, 0.28);
+        background: #f8f9ff;
+        color: var(--text);
+        font-size: 1rem;
+        outline: none;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .input-area input:focus {
+        border-color: rgba(94, 85, 255, 0.4);
+        box-shadow: 0 0 0 4px rgba(94, 85, 255, 0.08);
+      }
+
+      .btn-send {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(135deg, #5e55ff, #4f85ff);
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .btn-send:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 20px 35px rgba(94, 85, 255, 0.24);
+      }
+
+      @media (max-width: 860px) {
+        .chat-shell {
+          max-height: none;
+        }
+
+        .chat-body {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .panel-info {
+          display: none;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .chat-header {
+          padding: 1.2rem 1.4rem;
+        }
+
+        .input-area {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn-send {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-shell">
+      <header class="chat-header">
+        <div>
+          <h1 class="chat-title">Asisten Literasi Digital</h1>
+          <p class="chat-subtitle">
+            Tanya apa saja tentang keamanan digital, media sosial, dan literasi
+            informasi.
+          </p>
+        </div>
+        <div class="chat-header-actions">
+          <a href="history.html" class="btn-link"
+            ><i class="bi bi-clock-history"></i> Riwayat</a
+          >
+          <a href="menu.html" class="btn-link"
+            ><i class="bi bi-arrow-left-circle"></i> Kembali</a
+          >
+        </div>
+      </header>
+
+      <section class="chat-body">
+        <div id="chat-box">
+          <div class="bubble ai-msg">
+            Halo! Saya asisten digitalmu. Ada yang bisa saya bantu terkait
+            literasi digital atau keamanan online?
+          </div>
+        </div>
+
+        <div id="typing-container"></div>
+
+        <form
+          id="chat-form"
+          class="input-area"
+          onsubmit="
+            event.preventDefault();
+            sendChat();
+          "
+        >
+          <input
+            type="text"
+            id="userQuery"
+            placeholder="Tanya soal scam, password, privasi, atau keamanan..."
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="btn-send" aria-label="Kirim pesan">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </form>
+      </section>
+    </div>
+
+    <script>
+      const chatBox = document.getElementById("chat-box");
+      const queryInput = document.getElementById("userQuery");
+      const typingContainer = document.getElementById("typing-container");
+
+      // Fungsi untuk memuat history chat pengguna
+      async function loadChatHistory() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          // Jika tidak ada token, redirect ke login
+          window.location.href = "login.html";
+          return;
+        }
+
+        try {
+          const response = await fetch("/history/my-history", {
+            method: "GET",
+            headers: {
+              Authorization: token,
+            },
+          });
+
+          const data = await response.json();
+
+          if (data && data.length > 0) {
+            // Tampilkan history di chat box
+            data.forEach((item) => {
+              chatBox.innerHTML += `
+                <div class="bubble user-msg">${item.message}</div>
+                <div class="bubble ai-msg">${item.response.replace(/\n/g, "<br>")}</div>
+              `;
+            });
+            scrollChatToBottom();
+          }
+        } catch (error) {
+          console.error("Error loading history:", error);
+        }
+      }
+
+      function scrollChatToBottom() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      async function sendChat() {
+        const msg = queryInput.value.trim();
+        const token = localStorage.getItem("token");
+
+        if (!msg) return;
+        if (!token) return alert("Silakan login terlebih dahulu.");
+
+        chatBox.innerHTML += `<div class="bubble user-msg">${msg}</div>`;
+        queryInput.value = "";
+        scrollChatToBottom();
+
+        const typingId = "typing-" + Date.now();
+        typingContainer.innerHTML = `<div id="${typingId}" class="typing">AI sedang mengetik...</div>`;
+        scrollChatToBottom();
+
+        try {
+          const res = await fetch("/ai/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: token,
+            },
+            body: JSON.stringify({ message: msg }),
+          });
+
+          const data = await res.json();
+
+          const typingEl = document.getElementById(typingId);
+          if (typingEl) typingEl.remove();
+
+          chatBox.innerHTML += `
+                    <div class="bubble ai-msg">
+                        ${data.reply.replace(/\n/g, "<br>")}
+                    </div>
+                `;
+          scrollChatToBottom();
+        } catch (error) {
+          const typingEl = document.getElementById(typingId);
+          if (typingEl) typingEl.remove();
+
+          chatBox.innerHTML += `<div class="bubble ai-msg" style="color: #d6336c; border-color: rgba(214, 51, 108, 0.18);">Maaf, terdapat gangguan koneksi. Coba lagi nanti.</div>`;
+          scrollChatToBottom();
+        }
+      }
+
+      // Muat history saat halaman dimuat
+      window.addEventListener("load", loadChatHistory);
+    </script>
+  </body>
+</html>

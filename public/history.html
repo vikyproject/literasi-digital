@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Riwayat Konsultasi AI</title>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(93, 67, 255, 0.16),
+            transparent 22%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(63, 145, 255, 0.12),
+            transparent 18%
+          ),
+          linear-gradient(180deg, #f5f7ff 0%, #eef2ff 100%);
+        color: #1f2140;
+      }
+
+      .page-wrapper {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 3rem;
+      }
+
+      .hero-panel {
+        display: grid;
+        gap: 1rem;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(81, 64, 255, 0.12);
+        border-radius: 30px;
+        box-shadow: 0 32px 80px rgba(55, 58, 97, 0.08);
+        margin-bottom: 2rem;
+        backdrop-filter: blur(12px);
+      }
+
+      .hero-panel h1 {
+        margin: 0;
+        font-size: clamp(2rem, 2.5vw, 2.7rem);
+        line-height: 1.05;
+      }
+
+      .hero-panel p {
+        margin: 0;
+        color: #5f6278;
+        font-size: 1rem;
+        line-height: 1.8;
+      }
+
+      .history-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .history-title {
+        margin: 0;
+        font-size: 1.35rem;
+        font-weight: 700;
+      }
+
+      .history-subtitle {
+        color: #6f7291;
+        font-size: 0.96rem;
+      }
+
+      .btn-primary-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.95rem 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #5d54ff, #4f81ff);
+        border: none;
+        color: #fff;
+        font-weight: 700;
+        text-decoration: none;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .btn-primary-pill:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 18px 35px rgba(79, 129, 255, 0.28);
+      }
+
+      .history-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        color: #4f4d6d;
+      }
+
+      .history-meta span {
+        background: rgba(94, 85, 255, 0.1);
+        color: #5d54ff;
+        padding: 0.65rem 1rem;
+        border-radius: 999px;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .history-list {
+        display: grid;
+        gap: 1.4rem;
+      }
+
+      .history-card {
+        background: #fff;
+        border: 1px solid rgba(115, 103, 255, 0.12);
+        border-radius: 24px;
+        box-shadow: 0 24px 70px rgba(89, 93, 184, 0.08);
+        padding: 1.6rem;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .history-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 32px 90px rgba(89, 93, 184, 0.12);
+      }
+
+      .history-card-header {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+
+      .history-card-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 0.95rem;
+        border-radius: 999px;
+        background: rgba(94, 85, 255, 0.08);
+        color: #4d4c7b;
+        font-size: 0.88rem;
+        font-weight: 600;
+      }
+
+      .history-question {
+        margin: 0;
+        font-size: 1.05rem;
+        color: #1f2140;
+        font-weight: 700;
+        line-height: 1.6;
+      }
+
+      .history-answer {
+        margin: 1rem 0 0;
+        color: #5f6278;
+        font-size: 0.98rem;
+        line-height: 1.8;
+        background: #f6f8ff;
+        padding: 1.2rem 1.3rem;
+        border-radius: 20px;
+      }
+
+      .history-empty {
+        padding: 2rem;
+        border-radius: 24px;
+        text-align: center;
+        background: rgba(93, 67, 255, 0.08);
+        color: #4a4a6d;
+        border: 1px dashed rgba(93, 67, 255, 0.16);
+      }
+
+      .text-muted {
+        color: #6f7291 !important;
+      }
+
+      @media (max-width: 720px) {
+        .page-wrapper {
+          padding: 1.5rem 1rem 2rem;
+        }
+
+        .hero-panel {
+          padding: 1.6rem;
+        }
+
+        .history-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .btn-primary-pill {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <section class="hero-panel">
+        <div>
+          <p class="history-subtitle">Riwayat Interaksi</p>
+          <h1>Semua percakapan AI kamu dalam satu halaman.</h1>
+          <p>
+            Telusuri kembali jawaban, pelajari kembali saran, dan lanjutkan
+            obrolan kapan saja dengan tampilan riwayat yang lebih rapi.
+          </p>
+        </div>
+      </section>
+
+      <div class="history-header">
+        <div>
+          <h2 class="history-title">Riwayat Konsultasi</h2>
+          <p class="history-subtitle">
+            Lihat kembali pertanyaan dan jawaban AI terbaru.
+          </p>
+        </div>
+        <div class="history-meta">
+          <span id="history-count">Memuat...</span>
+        </div>
+        <a href="chat.html" class="btn-primary-pill">Kembali ke Chat</a>
+      </div>
+
+      <div id="history-list" class="history-list">
+        <div class="text-center text-muted">Memuat data...</div>
+      </div>
+    </div>
+
+    <script>
+      async function loadHistory() {
+        // 1. Ambil token dari localStorage
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          alert("Login dulu ya, Lek!");
+          window.location.href = "login.html";
+          return;
+        }
+
+        try {
+          // 2. Tembak API yang sudah kita buat di history.js
+          const response = await fetch("/history/my-history", {
+            method: "GET",
+            headers: {
+              Authorization: token, // Token ini kunci buat buka datamu
+            },
+          });
+
+          const data = await response.json();
+          const container = document.getElementById("history-list");
+          const countLabel = document.getElementById("history-count");
+          container.innerHTML = "";
+
+          if (!data || data.length === 0) {
+            countLabel.textContent = "0 riwayat";
+            container.innerHTML =
+              '<div class="history-empty">Belum ada riwayat chat nih. Yuk mulai chat dengan AI sekarang!</div>';
+            return;
+          }
+
+          countLabel.textContent = `${data.length} riwayat`;
+
+          // 3. Looping data dari Database ke HTML
+          data.forEach((item) => {
+            const date = new Date(item.created_at).toLocaleString("id-ID");
+            container.innerHTML += `
+                    <article class="history-card">
+                        <div class="history-card-header">
+                            <p class="history-question">${item.message}</p>
+                            <span class="history-card-date">${date}</span>
+                        </div>
+                        <div class="history-answer">
+                            ${item.response.replace(/\n/g, "<br>")}
+                        </div>
+                    </article>
+                `;
+          });
+        } catch (error) {
+          console.error("Error:", error);
+          document.getElementById("history-count").textContent = "Error";
+          document.getElementById("history-list").innerHTML =
+            '<div class="history-empty">Gagal ambil data. Cek koneksi server atau refresh halaman.</div>';
+        }
+      }
+
+      // Jalankan fungsi pas halaman dibuka
+      loadHistory();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tentang Literasi AI</title>
+    <style>
+      :root {
+        --bg: #eef4ff;
+        --surface: rgba(255, 255, 255, 0.95);
+        --text: #1f2140;
+        --muted: #6d7088;
+        --primary: #5d54ff;
+        --primary-soft: rgba(93, 84, 255, 0.12);
+        --success: #2f855a;
+        --danger: #c53030;
+        --shadow: 0 24px 80px rgba(55, 58, 97, 0.12);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Inter", "Segoe UI", sans-serif;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(93, 84, 255, 0.16),
+            transparent 24%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(63, 145, 255, 0.12),
+            transparent 20%
+          ),
+          linear-gradient(180deg, #f7f9ff 0%, var(--bg) 100%);
+        color: var(--text);
+        padding: 1.5rem;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(93, 84, 255, 0.05),
+          transparent 55%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .page {
+        position: relative;
+        max-width: 1140px;
+        margin: 0 auto;
+        z-index: 1;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.25rem 1.6rem;
+        background: var(--surface);
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        border-radius: calc(var(--radius) - 2px);
+        box-shadow: var(--shadow);
+        margin-bottom: 1.75rem;
+        backdrop-filter: blur(14px);
+      }
+
+      .brand {
+        font-size: 1.4rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 0.75rem;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        border-radius: 999px;
+        transition:
+          background 0.2s,
+          transform 0.2s;
+      }
+
+      .nav-links a:hover {
+        background: var(--primary-soft);
+        transform: translateY(-1px);
+        color: var(--primary);
+      }
+
+      .hero {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        padding: 2.2rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        display: grid;
+        gap: 1rem;
+      }
+
+      .hero__eyebrow {
+        display: inline-flex;
+        align-items: center;
+        color: var(--primary);
+        font-size: 0.95rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .hero__title {
+        margin: 0;
+        font-size: clamp(2rem, 2.6vw, 2.8rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .hero__text {
+        margin: 0;
+        color: var(--muted);
+        max-width: 760px;
+        line-height: 1.85;
+      }
+
+      .content-sections {
+        display: grid;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .section-card {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+      }
+
+      .section-card:hover {
+        border-color: rgba(93, 84, 255, 0.24);
+        box-shadow: 0 32px 96px rgba(93, 84, 255, 0.12);
+        transform: translateY(-2px);
+      }
+
+      .section-card h2 {
+        margin: 0 0 1rem;
+        font-size: 1.6rem;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .section-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 1.6rem;
+      }
+
+      .section-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.85;
+        font-size: 0.98rem;
+      }
+
+      .section-card p + p {
+        margin-top: 1rem;
+      }
+
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.2rem;
+        margin-top: 1.5rem;
+      }
+
+      .value-item {
+        background: linear-gradient(
+          135deg,
+          rgba(93, 84, 255, 0.08),
+          rgba(79, 129, 255, 0.04)
+        );
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        border-radius: 16px;
+        padding: 1.4rem;
+        text-align: center;
+      }
+
+      .value-item-icon {
+        font-size: 2.2rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .value-item h3 {
+        margin: 0 0 0.6rem;
+        font-size: 1.1rem;
+        color: var(--text);
+      }
+
+      .value-item p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.7;
+      }
+
+      .cta-section {
+        background: var(--surface);
+        border-radius: var(--radius);
+        border: 1px solid rgba(93, 84, 255, 0.12);
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        text-align: center;
+      }
+
+      .cta-section h2 {
+        margin: 0 0 1rem;
+        font-size: 1.6rem;
+      }
+
+      .cta-section p {
+        margin: 0 0 1.5rem;
+        color: var(--muted);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.8;
+      }
+
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 1rem 1.8rem;
+        background: linear-gradient(135deg, var(--primary), #4f81ff);
+        color: white;
+        text-decoration: none;
+        border: none;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.98rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 35px rgba(93, 84, 255, 0.24);
+      }
+
+      @media (max-width: 720px) {
+        body {
+          padding: 1rem;
+        }
+
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero {
+          padding: 1.5rem;
+        }
+
+        .section-card {
+          padding: 1.5rem;
+        }
+
+        .section-card h2 {
+          font-size: 1.3rem;
+        }
+
+        .values-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .cta-section {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav>
+        <div class="brand">Tentang Kami</div>
+        <div class="nav-links">
+          <a href="menu.html">Menu</a>
+          <a href="modul.html">Modul</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <span class="hero__eyebrow">Tentang Platform</span>
+        <h1 class="hero__title">Literasi AI</h1>
+        <p class="hero__text">
+          Kami berkomitmen untuk memberdayakan masyarakat dengan pengetahuan dan
+          keterampilan dalam memanfaatkan kecerdasan buatan secara bijak,
+          bertanggung jawab, dan inovatif.
+        </p>
+      </section>
+
+      <section class="content-sections">
+        <div class="section-card">
+          <h2>
+            <span class="section-icon">ℹ️</span>
+            Tentang Literasi AI
+          </h2>
+          <p>
+            Literasi AI adalah platform edukasi yang menyediakan materi
+            pembelajaran tentang kecerdasan buatan (AI) untuk membantu
+            masyarakat memahami konsep dasar, aplikasi, dan dampak AI dalam
+            kehidupan sehari-hari. Kami fokus pada edukasi yang inklusif dan
+            mudah dipahami untuk semua kalangan.
+          </p>
+          <p>
+            Dengan kombinasi modul pembelajaran interaktif, studi kasus praktis,
+            dan chatbot AI yang responsif, kami menciptakan pengalaman belajar
+            yang komprehensif dan menyenangkan.
+          </p>
+        </div>
+
+        <div class="section-card">
+          <h2>
+            <span class="section-icon">🎯</span>
+            Visi Kami
+          </h2>
+          <p>
+            Menciptakan masyarakat yang melek teknologi dengan pengetahuan AI
+            yang kuat, sehingga mereka dapat memanfaatkan teknologi ini secara
+            bijak dan bertanggung jawab dalam setiap aspek kehidupan mereka.
+          </p>
+          <p>
+            Kami membayangkan masa depan di mana pemahaman tentang AI bukan lagi
+            hak istimewa, tetapi merupakan keahlian fundamental yang dimiliki
+            oleh setiap individu di masyarakat.
+          </p>
+        </div>
+
+        <div class="section-card">
+          <h2>
+            <span class="section-icon">💡</span>
+            Misi Kami
+          </h2>
+          <p>
+            Menyediakan akses pendidikan berkualitas tinggi tentang AI yang
+            terjangkau dan mudah dipahami bagi semua kalangan tanpa membedakan
+            latar belakang atau pengalaman teknis mereka.
+          </p>
+          <p>
+            Kami berkomitmen untuk terus berinovasi dan mengembangkan materi
+            pembelajaran yang relevan, interaktif, dan disesuaikan dengan
+            kebutuhan pengguna modern.
+          </p>
+        </div>
+
+        <div class="section-card">
+          <h2>
+            <span class="section-icon">👥</span>
+            Tim Kami
+          </h2>
+          <p>
+            Tim kami terdiri dari para ahli di bidang AI, pendidikan, dan
+            teknologi yang berdedikasi untuk menyediakan konten berkualitas
+            tinggi dan mudah dipahami bagi semua kalangan. Setiap anggota tim
+            kami membawa perspektif unik dan pengalaman mendalam dalam domain
+            mereka.
+          </p>
+          <p>
+            Kami percaya pada kolaborasi, inovasi berkelanjutan, dan komitmen
+            terhadap keunggulan dalam setiap aspek pengembangan platform
+            Literasi AI.
+          </p>
+        </div>
+
+        <div class="section-card">
+          <h2>
+            <span class="section-icon">⭐</span>
+            Nilai-Nilai Kami
+          </h2>
+          <div class="values-grid">
+            <div class="value-item">
+              <div class="value-item-icon">🎓</div>
+              <h3>Edukasi Berkualitas</h3>
+              <p>
+                Menyediakan materi pembelajaran terbaik dengan standar
+                internasional
+              </p>
+            </div>
+            <div class="value-item">
+              <div class="value-item-icon">🌍</div>
+              <h3>Aksesibilitas</h3>
+              <p>
+                Pendidikan gratis dan terbuka untuk semua tanpa hambatan biaya
+              </p>
+            </div>
+            <div class="value-item">
+              <div class="value-item-icon">🤝</div>
+              <h3>Inklusivitas</h3>
+              <p>Melayani semua kalangan dari pemula hingga mahir</p>
+            </div>
+            <div class="value-item">
+              <div class="value-item-icon">🔍</div>
+              <h3>Transparansi</h3>
+              <p>Komunikasi jelas tentang tujuan dan dampak AI</p>
+            </div>
+            <div class="value-item">
+              <div class="value-item-icon">💪</div>
+              <h3>Pemberdayaan</h3>
+              <p>Membantu masyarakat membuat keputusan cerdas tentang AI</p>
+            </div>
+            <div class="value-item">
+              <div class="value-item-icon">🔒</div>
+              <h3>Etika</h3>
+              <p>Mempromosikan penggunaan AI yang bertanggung jawab dan etis</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section">
+        <h2>Siap Mulai Belajar?</h2>
+        <p>
+          Bergabunglah dengan ribuan pengguna lainnya dalam perjalanan pemahaman
+          AI. Akses semua modul pembelajaran, studi kasus, dan chatbot AI gratis
+          sekarang juga.
+        </p>
+        <a href="menu.html" class="cta-button">
+          Mulai Belajar
+          <span>→</span>
+        </a>
+      </section>
+    </div>
+  </body>
+</html>

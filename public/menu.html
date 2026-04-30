@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menu Utama</title>
+    <style>
+      :root {
+        --bg: #eef2ff;
+        --surface: rgba(255, 255, 255, 0.88);
+        --text: #1f1b33;
+        --muted: #746f8a;
+        --primary: #6d5dff;
+        --primary-soft: rgba(109, 93, 255, 0.16);
+        --shadow: 0 24px 80px rgba(55, 58, 97, 0.12);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(109, 93, 255, 0.16),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(45, 87, 255, 0.12),
+            transparent 18%
+          ),
+          linear-gradient(180deg, #f8faff 0%, #eef2ff 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(109, 93, 255, 0.05),
+          transparent 60%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .page {
+        position: relative;
+        width: min(1200px, 100%);
+        z-index: 1;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding: 1rem 1.5rem;
+        background: var(--surface);
+        border: 1px solid rgba(109, 93, 255, 0.14);
+        border-radius: calc(var(--radius) - 8px);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .brand {
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        padding: 0.65rem 1rem;
+        border-radius: 999px;
+        transition:
+          background 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background: var(--primary-soft);
+        transform: translateY(-1px);
+        color: var(--primary);
+      }
+
+      .hero {
+        display: grid;
+        gap: 1.25rem;
+        padding: 2rem 2.2rem;
+        background: var(--surface);
+        border: 1px solid rgba(109, 93, 255, 0.12);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        margin-bottom: 2rem;
+      }
+
+      .hero__eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary);
+        font-size: 0.95rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+      }
+
+      .hero__title {
+        margin: 0;
+        font-size: clamp(2rem, 2.8vw, 3.2rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .hero__text {
+        max-width: 760px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.9;
+      }
+
+      .hero__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .hero__button,
+      .hero__button--secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.95rem 1.6rem;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .hero__button {
+        color: #fff;
+        background: linear-gradient(135deg, #6d5dff, #6484ff);
+        box-shadow: 0 16px 30px rgba(109, 93, 255, 0.28);
+      }
+
+      .hero__button:hover {
+        transform: translateY(-2px);
+      }
+
+      .hero__button--secondary {
+        background: rgba(109, 93, 255, 0.09);
+        color: var(--text);
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(250px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 260px;
+        padding: 1.8rem;
+        border-radius: 1.5rem;
+        background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
+        border: 1px solid rgba(109, 93, 255, 0.08);
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease,
+          border-color 0.3s ease;
+        text-align: left;
+        color: inherit;
+      }
+
+      .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 36px 100px rgba(55, 58, 97, 0.16);
+        border-color: rgba(109, 93, 255, 0.18);
+      }
+
+      .card__icon {
+        width: 3rem;
+        height: 3rem;
+        display: grid;
+        place-items: center;
+        border-radius: 18px;
+        background: rgba(109, 93, 255, 0.1);
+        font-size: 1.4rem;
+      }
+
+      .card__title {
+        margin: 0.9rem 0 0.5rem;
+        font-size: 1.4rem;
+        line-height: 1.2;
+      }
+
+      .card__content {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .card__meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.4rem;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .card__date {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .card__footer {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .card__footer::after {
+        content: "→";
+        font-size: 1rem;
+      }
+
+      .button-reset {
+        all: unset;
+      }
+
+      .footer {
+        margin-top: 3rem;
+        padding: 2rem 1.5rem;
+        background: var(--surface);
+        border: 1px solid rgba(109, 93, 255, 0.12);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-brand h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--primary);
+      }
+
+      .footer-brand p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.75;
+        max-width: 720px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        transition: color 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary);
+      }
+
+      @media (max-width: 700px) {
+        .footer-content {
+          flex-direction: column;
+          gap: 1.5rem;
+          text-align: center;
+        }
+
+        .footer-links {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .cards {
+          grid-template-columns: repeat(2, minmax(220px, 1fr));
+        }
+
+        body {
+          padding: 1rem;
+        }
+
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero {
+          padding: 1.5rem;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  <body>
+    <div class="page">
+      <nav>
+        <div class="brand">Literasi AI</div>
+        <div class="nav-links">
+          <a href="about.html">Tentang</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <span class="hero__eyebrow">Pusat Pembelajaran</span>
+        <h1 class="hero__title">
+          Selamat datang di Menu Utama Literasi Digital
+        </h1>
+        <p class="hero__text">
+          Pilih salah satu fitur di bawah untuk mempelajari literasi digital
+          dengan cara yang lebih mudah, interaktif, dan modern. Semua materi
+          dibuat untuk membantu kamu memahami teknologi dengan percaya diri.
+        </p>
+        <div class="hero__actions" id="aksi">
+          <button
+            class="hero__button"
+            onclick="window.location.href = 'modul.html'"
+          >
+            Jelajahi Modul
+          </button>
+          <button
+            class="hero__button--secondary"
+            onclick="window.location.href = 'chat.html'"
+          >
+            Tanya AI Sekarang
+          </button>
+        </div>
+      </section>
+
+      <main class="cards" id="fitur">
+        <button
+          type="button"
+          class="card button-reset"
+          onclick="window.location.href = 'modul.html'"
+        >
+          <span class="card__icon">📘</span>
+          <h2 class="card__title">Modul Pembelajaran</h2>
+          <p class="card__content">
+            Pelajari literasi digital secara bertahap dengan modul yang jelas
+            dan mudah diikuti.
+          </p>
+          <div class="card__meta">
+            <span class="card__date">Terbaru</span>
+            <span class="card__footer">Buka Modul</span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          class="card button-reset"
+          onclick="window.location.href = 'chat.html'"
+        >
+          <span class="card__icon">💬</span>
+          <h2 class="card__title">Tanya AI</h2>
+          <p class="card__content">
+            Ajukan pertanyaan literasi digital dan dapatkan jawaban cepat dari
+            asisten AI.
+          </p>
+          <div class="card__meta">
+            <span class="card__date">Interaktif</span>
+            <span class="card__footer">Mulai Tanya</span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          class="card button-reset"
+          onclick="window.location.href = 'studikasus.html'"
+        >
+          <span class="card__icon">🧠</span>
+          <h2 class="card__title">Simulasi Studi Kasus</h2>
+          <p class="card__content">
+            Lihat contoh nyata dan diskusi yang membantu kamu menerapkan
+            literasi digital dalam kehidupan sehari-hari.
+          </p>
+          <div class="card__meta">
+            <span class="card__date">Praktis</span>
+            <span class="card__footer">Lihat Studi</span>
+          </div>
+        </button>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <h3>Literasi AI</h3>
+            <p>
+              Misi kami adalah memberdayakan semua orang dengan pengetahuan
+              literasi digital yang diperlukan untuk sukses di era teknologi.
+            </p>
+          </div>
+          <div class="footer-links">
+            <a href="about.html">Tentang Kami</a>
+            <a href="faq.html">FAQ</a>
+            <a href="contact.html">Kontak</a>
+          </div>
+        </div>
+      </footer>     
+      <p style="text-align: center;">Literasi AI &copy; 2026. Semua hak dilindungi.</p>
+    </div>
+  </body>
+</html>

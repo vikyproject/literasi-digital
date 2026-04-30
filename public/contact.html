@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kontak Kami - Literasi AI</title>
+    <style>
+      :root {
+        --bg: #eef2ff;
+        --surface: rgba(255, 255, 255, 0.88);
+        --text: #1f1b33;
+        --muted: #746f8a;
+        --primary: #6d5dff;
+        --primary-soft: rgba(109, 93, 255, 0.16);
+        --shadow: 0 24px 80px rgba(55, 58, 97, 0.12);
+        --radius: 28px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(109, 93, 255, 0.16),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(45, 87, 255, 0.12),
+            transparent 18%
+          ),
+          linear-gradient(180deg, #f8faff 0%, #eef2ff 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(109, 93, 255, 0.05),
+          transparent 60%
+        );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .page {
+        position: relative;
+        width: min(1200px, 100%);
+        z-index: 1;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        padding: 1rem 1.5rem;
+        background: var(--surface);
+        border: 1px solid rgba(109, 93, 255, 0.14);
+        border-radius: calc(var(--radius) - 8px);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .brand {
+        font-size: 1.35rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        padding: 0.65rem 1rem;
+        border-radius: 999px;
+        transition:
+          background 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .nav-links a:hover {
+        background: var(--primary-soft);
+        transform: translateY(-1px);
+        color: var(--primary);
+      }
+
+      .contact-section {
+        display: grid;
+        gap: 2rem;
+        padding: 2rem 2.2rem;
+        background: var(--surface);
+        border: 1px solid rgba(109, 93, 255, 0.12);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+        margin-bottom: 2rem;
+      }
+
+      .contact-header {
+        text-align: center;
+      }
+
+      .contact-header h1 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(2rem, 2.8vw, 3.2rem);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
+      }
+
+      .contact-header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .contact-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      .info-item .icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+
+      .info-item .content h3 {
+        margin: 0 0 0.25rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+
+      .info-item .content p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .contact-form {
+        background: linear-gradient(180deg, #ffffff 0%, #f5f7ff 100%);
+        padding: 2rem;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(109, 93, 255, 0.08);
+        box-shadow: var(--shadow);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid rgba(109, 93, 255, 0.14);
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 1rem;
+        background: #fff;
+        transition: border-color 0.2s ease;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 0.95rem 1.6rem;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1rem;
+        color: #fff;
+        background: linear-gradient(135deg, #6d5dff, #6484ff);
+        box-shadow: 0 16px 30px rgba(109, 93, 255, 0.28);
+        transition: transform 0.2s ease;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .footer {
+        margin-top: 3rem;
+        padding: 2rem 1.5rem;
+        background: var(--surface);
+        border: 1px solid rgba(109, 93, 255, 0.12);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(18px);
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .footer-brand h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--primary);
+      }
+
+      .footer-brand p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.75;
+        max-width: 720px;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+      }
+
+      .footer-links a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 600;
+        transition: color 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary);
+      }
+
+      @media (max-width: 768px) {
+        .contact-content {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-content {
+          flex-direction: column;
+          gap: 1.5rem;
+          text-align: center;
+        }
+
+        .footer-links {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        body {
+          padding: 1rem;
+        }
+
+        nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .contact-section {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <nav>
+        <div class="brand">Literasi AI</div>
+        <div class="nav-links">
+          <a href="menu.html">Beranda</a>
+          <a href="about.html">Tentang</a>
+          <a href="faq.html">FAQ</a>
+          <a href="contact.html">Kontak</a>
+        </div>
+      </nav>
+
+      <section class="contact-section">
+        <div class="contact-header">
+          <h1>Hubungi Kami</h1>
+          <p>
+            Ada pertanyaan tentang literasi digital? Kami siap membantu! Kirim
+            pesan kepada kami dan tim kami akan merespons secepat mungkin.
+          </p>
+        </div>
+
+        <div class="contact-content">
+          <div class="contact-info">
+            <div class="info-item">
+              <div class="icon">📧</div>
+              <div class="content">
+                <h3>Email</h3>
+                <p>literasi.ai@example.com</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="icon">📱</div>
+              <div class="content">
+                <h3>Telepon</h3>
+                <p>+62 812-3456-7890</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="icon">📍</div>
+              <div class="content">
+                <h3>Alamat</h3>
+                <p>Jl. Teknologi No. 123<br />Jakarta, Indonesia</p>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="icon">🕒</div>
+              <div class="content">
+                <h3>Jam Kerja</h3>
+                <p>Senin - Jumat: 09:00 - 17:00<br />Sabtu: 09:00 - 15:00</p>
+              </div>
+            </div>
+          </div>
+
+          <form class="contact-form" action="#" method="post">
+            <div class="form-group">
+              <label for="name">Nama Lengkap</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            <div class="form-group">
+              <label for="subject">Subjek</label>
+              <input type="text" id="subject" name="subject" required />
+            </div>
+            <div class="form-group">
+              <label for="message">Pesan</label>
+              <textarea id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Kirim Pesan</button>
+          </form>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <h3>Literasi AI</h3>
+            <p>
+              Platform pembelajaran literasi digital yang membantu masyarakat
+              Indonesia memahami dan menguasai teknologi dengan cara yang mudah
+              dan menyenangkan.
+            </p>
+          </div>
+          <div class="footer-links">
+            <a href="about.html">Tentang Kami</a>
+            <a href="faq.html">FAQ</a>
+            <a href="contact.html">Kontak</a>
+            <a href="modul.html">Modul</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
