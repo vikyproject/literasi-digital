@@ -8,3 +8,5 @@ Cara instal node_modules
    npm install
 
 dan pastikan tambahkan api key dari groq ai kalian
+
+jangan lupa upload databasenya dari literasi-ai.sql
