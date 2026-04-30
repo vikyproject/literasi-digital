@@ -1,0 +1,14 @@
+{
+  "name": "literasi-ai",
+  "version": "1.0.0",
+  "main": "server.js",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.1",
+    "express": "^4.22.1",
+    "groq-sdk": "^1.1.2",
+    "jsonwebtoken": "^9.0.3",
+    "mysql2": "^3.22.0"
+  }
+}
