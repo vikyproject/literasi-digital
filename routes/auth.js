@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("../middleware/authMiddleware");
 
 // REGISTER
 router.post("/register", async (req, res) => {
@@ -21,7 +22,7 @@ router.post("/register", async (req, res) => {
 });
 
 // LOGIN
-router.post("/login", async (req, res) => {
+router.post(["/index", "/login"], async (req, res) => {
   const { username, password, role } = req.body;
 
   try {
@@ -52,6 +53,11 @@ router.post("/login", async (req, res) => {
           { expiresIn: "1h" },
         );
 
+        res.cookie("token", token, {
+          maxAge: 3600000,
+          sameSite: "Lax",
+        });
+
         res.json({
           msg: "Login berhasil!",
           token: token,
@@ -62,6 +68,10 @@ router.post("/login", async (req, res) => {
   } catch (err) {
     res.status(500).send("Server error");
   }
+});
+
+router.get("/me", authMiddleware, (req, res) => {
+  res.json({ id: req.user.id, role: req.user.role });
 });
 
 module.exports = router;

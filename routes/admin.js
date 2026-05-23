@@ -1,6 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db"); // Pastikan config/db.js kamu udah bener
+const authMiddleware = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
+
+router.get("/modules", (req, res) => {
+  const query = "SELECT * FROM modules ORDER BY created_at DESC";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(results);
+  });
+});
+
+router.use(authMiddleware, roleMiddleware);
 
 // Route buat ambil semua user
 router.get("/users", (req, res) => {
@@ -35,14 +47,6 @@ router.delete("/users/:id", (req, res) => {
   db.query(query, [id], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ success: true, affectedRows: results.affectedRows });
-  });
-});
-
-router.get("/modules", (req, res) => {
-  const query = "SELECT * FROM modules ORDER BY created_at DESC";
-  db.query(query, (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
   });
 });
 

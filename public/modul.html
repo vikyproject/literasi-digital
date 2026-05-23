@@ -325,13 +325,18 @@
       <div id="emptyState" class="empty-state" style="display: none">
         <h2>Belum ada modul tersedia</h2>
         <p>
-          Tambahkan modul baru di panel admin agar materi muncul di sini dengan
-          gambar, nama, dan deskripsi yang menarik.
+          Modul sedang dalam proses penambahan. Silakan cek kembali nanti atau
+          hubungi administrator untuk informasi lebih lanjut.
         </p>
       </div>
     </div>
 
     <script>
+      const token = localStorage.getItem("token");
+      if (!token) {
+        window.location.href = "index.html";
+      }
+
       async function loadModules() {
         try {
           const res = await fetch("/admin/modules");
