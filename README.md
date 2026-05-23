@@ -1,6 +1,6 @@
 # 📱 Literasi Digital AI — Chatbot Edukasi Keamanan Digital
 
-> Final Project — AI Productivity and AI API Integration for Developers | Hacktiv8
+> Final Project — AI Productivity and AI API Integration for Developers
 
 Literasi Digital AI adalah platform edukasi berbasis chatbot yang membantu pengguna memahami dan menerapkan keamanan digital dalam kehidupan sehari-hari. Chatbot ini berperan sebagai **pakar literasi digital** yang memberikan langkah-langkah aman, checklist keamanan, dan edukasi seputar dunia digital.
 
