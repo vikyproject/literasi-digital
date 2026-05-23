@@ -199,12 +199,25 @@ Chatbot menggunakan model **llama-3.3-70b-versatile** dari Groq dengan persona:
 |------|-------|
 | **User** | Register, login, chat dengan AI, lihat riwayat chat, akses modul |
 | **Admin** | Semua akses user + kelola modul belajar |
-
+| **default user** | admin (kai=kai123) + user (kocak123=kocak123) |
 ---
 
 ## 📸 Screenshots
+1. login
+<img width="1919" height="884" alt="image" src="https://github.com/user-attachments/assets/1ffb78bf-b85c-4039-af85-24821cd77392" />
+2. menu
+<img width="1219" height="867" alt="image" src="https://github.com/user-attachments/assets/73751c32-029d-445c-9e93-f83766e25639" />
+3. chat ai
+<img width="1919" height="882" alt="image" src="https://github.com/user-attachments/assets/2b20af97-96b3-48b8-a348-5f7b836e42e6" />
+4. studi kasus
+<img width="1919" height="875" alt="image" src="https://github.com/user-attachments/assets/77e8d3d2-2035-4c99-9cc3-90812dd795cd" />
+5. modul
+<img width="1919" height="882" alt="image" src="https://github.com/user-attachments/assets/74d67d3a-5f49-4ad4-b78a-8493d7a3785a" />
+6. panel admin kelola user
+<img width="1919" height="880" alt="image" src="https://github.com/user-attachments/assets/9926f9f4-2ac5-4819-ac57-4ae9a69a9801" />
+7. panel admin tambah modul
+<img width="1894" height="882" alt="image" src="https://github.com/user-attachments/assets/8d2655d4-dad8-4f63-9f7f-13007adc55b6" />
 
-*(Tambahkan screenshot tampilan UI di sini)*
 
 ---
 
@@ -212,4 +225,4 @@ Chatbot menggunakan model **llama-3.3-70b-versatile** dari Groq dengan persona:
 
 **Nama:** Viky, Raihan, Farhan, Zam Zam
 **GitHub:** [@vikyproject](https://github.com/vikyproject) | [@vikyproject](https://github.com/vikyproject) | [@vikyproject](https://github.com/vikyproject) | [@vikyproject](https://github.com/vikyproject)
-**Cohort:** Hacktiv8 — AI Productivity and AI API Integration for Developers
+**Cohort:** AI Productivity and AI API Integration for Developers
