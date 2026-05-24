@@ -58,11 +58,11 @@ literasi-digital/
 │   └── auth.js            # Middleware JWT authentication
 ├── public/
 │   ├── src/
-|       └── css/
-|       └── js/  
+|       ├── css/           # Aset CSS 
+|       └── js/            # Aset JS
 │   ├── index.html         # Halaman utama / login
 │   ├── chat.html          # Halaman chatbot
-│   └── ...                # Aset CSS & JS
+│   └── ...                # Halaman lainnya
 ├── routes/
 │   ├── auth.js            # Route register & login
 │   ├── chat.js            # Route chatbot AI
