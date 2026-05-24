@@ -57,6 +57,9 @@ literasi-digital/
 ├── middleware/
 │   └── auth.js            # Middleware JWT authentication
 ├── public/
+│   ├── src/
+|       └── css/
+|       └── js/  
 │   ├── index.html         # Halaman utama / login
 │   ├── chat.html          # Halaman chatbot
 │   └── ...                # Aset CSS & JS
