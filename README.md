@@ -235,6 +235,6 @@ Chatbot menggunakan model **llama-3.3-70b-versatile** dari Groq dengan persona:
 
 **Nama:** Viky, Raihan, Farhan, Zam Zam
 
-**GitHub:** [@vikyproject](https://github.com/vikyproject) | [@vikyproject](https://github.com/vikyproject) | [@vikyproject](https://github.com/vikyproject) | [@vikyproject](https://github.com/vikyproject)
+**GitHub:** 
 
 **Cohort:** AI Productivity and AI API Integration for Developers
